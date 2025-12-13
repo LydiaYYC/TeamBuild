@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>百萬大富翁題目遊戲</title>
+<title>分類題目遊戲</title>
 
 <style>
 body {
@@ -15,36 +15,34 @@ body {
 }
 
 h2 {
-  margin: 16px 0;
+  margin: 12px 0;
 }
 
 #board {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
   max-width: 360px;
   margin: auto;
 }
 
-/* 卡片 */
-.card {
-  perspective: 1000px;
+/* 分類標題 */
+.category {
+  font-weight: bold;
+  font-size: 14px;
+  padding: 6px 0;
 }
 
-.card-inner {
-  width: 160px;
-  height: 120px;
+/* 分數卡片 */
+.card {
   background: #1e90ff;
   border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
+  padding: 14px 0;
+  font-size: 18px;
   font-weight: bold;
   cursor: pointer;
 }
 
-/* 卡片消失 */
 .card.hide {
   opacity: 0;
   pointer-events: none;
@@ -77,16 +75,6 @@ h2 {
   text-align: left;
 }
 
-.modal-content img {
-  max-width: 100%;
-  margin-bottom: 10px;
-}
-
-.modal-content audio {
-  width: 100%;
-  margin-bottom: 10px;
-}
-
 #closeBtn {
   position: absolute;
   top: 8px;
@@ -99,10 +87,11 @@ h2 {
 
 <body>
 
-<h2>🎮 百萬大富翁題目牆</h2>
+<h2>🎮 分類題目遊戲</h2>
+
 <div id="board"></div>
 
-<!-- 放大題目視窗 -->
+<!-- 題目視窗 -->
 <div id="modal" class="modal">
   <div class="modal-content">
     <span id="closeBtn">✖</span>
@@ -111,36 +100,34 @@ h2 {
 </div>
 
 <script>
+const categories = ["歷史", "人文", "數學", "常識", "科學"];
+const values = [100, 200, 300, 400];
+
+/* 題目資料 */
 const questions = [
-  // 200 分
-  { value: 200, question: "1 + 1 = ?" },
-  { value: 200, question: "太陽從哪邊升起？" },
-  { value: 200, question: "請聽聲音，這是什麼動物？", audio: "audio/dog.mp3" },
-  { value: 200, question: "這是哪個城市？", image: "images/taipei.jpg" },
+  { category: "歷史", value: 100, question: "秦始皇統一中國是哪個朝代？" },
+  { category: "人文", value: 100, question: "四書之一是什麼？" },
+  { category: "數學", value: 100, question: "5 + 5 = ?" },
+  { category: "常識", value: 100, question: "一年有幾個月？" },
+  { category: "科學", value: 100, question: "水的化學式是什麼？" },
 
-  // 300 分
-  { value: 300, question: "一年有幾個月？" },
-  { value: 300, question: "水的化學式是什麼？" },
-  { value: 300, question: "下圖是什麼？", image: "images/rainbow.jpg" },
-  { value: 300, question: "這是什麼樂器？", audio: "audio/violin.mp3" },
+  { category: "歷史", value: 200, question: "清朝最後一位皇帝是誰？" },
+  { category: "人文", value: 200, question: "蒙娜麗莎是誰畫的？" },
+  { category: "數學", value: 200, question: "10 × 10 = ?" },
+  { category: "常識", value: 200, question: "台灣的首都是哪裡？" },
+  { category: "科學", value: 200, question: "地球是第幾顆行星？" },
 
-  // 500 分
-  { value: 500, question: "HTML 是做什麼的？" },
-  { value: 500, question: "人體最大的器官是什麼？" },
-  { value: 500, question: "這是哪一國國旗？", image: "images/japan.png" },
-  { value: 500, question: "光速約是多少？" },
+  { category: "歷史", value: 300, question: "一戰爆發於哪一年？" },
+  { category: "人文", value: 300, question: "莎士比亞是哪國人？" },
+  { category: "數學", value: 300, question: "√16 = ?" },
+  { category: "常識", value: 300, question: "彩虹有幾種顏色？" },
+  { category: "科學", value: 300, question: "人類需要呼吸哪種氣體？" },
 
-  // 1000 分
-  { value: 1000, question: "相對論是誰提出的？" },
-  { value: 1000, question: "CSS 的主要用途是什麼？" },
-  { value: 1000, question: "DNA 是什麼的縮寫？" },
-  { value: 1000, question: "二戰結束於哪一年？" },
-
-  // 1500 分
-  { value: 1500, question: "請聽音樂，這是哪首歌？", audio: "audio/song.mp3" },
-  { value: 1500, question: "黑洞是如何形成的？" },
-  { value: 1500, question: "量子不確定性原理由誰提出？" },
-  { value: 1500, question: "JavaScript 的事件冒泡是什麼？" }
+  { category: "歷史", value: 400, question: "工業革命起源於哪一國？" },
+  { category: "人文", value: 400, question: "清明上河圖是誰畫的？" },
+  { category: "數學", value: 400, question: "直角三角形有幾個直角？" },
+  { category: "常識", value: 400, question: "一天有幾小時？" },
+  { category: "科學", value: 400, question: "光速約多少？" }
 ];
 
 const board = document.getElementById("board");
@@ -150,43 +137,46 @@ const closeBtn = document.getElementById("closeBtn");
 
 let currentCard = null;
 
-// 產生卡片
-questions.forEach(q => {
-  const card = document.createElement("div");
-  card.className = "card";
-
-  card.innerHTML = `
-    <div class="card-inner">
-      ${q.value} 分
-    </div>
-  `;
-
-  card.onclick = () => {
-    if (card.classList.contains("used")) return;
-
-    currentCard = card;
-
-    modalBody.innerHTML = `
-      <h3>${q.value} 分</h3>
-      ${q.image ? `<img src="${q.image}">` : ""}
-      ${q.audio ? `<audio controls src="${q.audio}"></audio>` : ""}
-      <p>${q.question}</p>
-    `;
-
-    modal.classList.add("show");
-  };
-
-  board.appendChild(card);
+/* 標題列 */
+categories.forEach(cat => {
+  const div = document.createElement("div");
+  div.className = "category";
+  div.textContent = cat;
+  board.appendChild(div);
 });
 
-// 關閉視窗並移除卡片
+/* 分數格子（只顯示分數） */
+values.forEach(value => {
+  categories.forEach(cat => {
+    const q = questions.find(
+      item => item.category === cat && item.value === value
+    );
+
+    const card = document.createElement("div");
+    card.className = "card";
+    card.textContent = value; // ⭐ 只有分數
+
+    card.onclick = () => {
+      if (card.classList.contains("used")) return;
+
+      currentCard = card;
+
+      modalBody.innerHTML = `
+        <h3>${cat}｜${value} 分</h3>
+        <p>${q.question}</p>
+      `;
+
+      modal.classList.add("show");
+    };
+
+    board.appendChild(card);
+  });
+});
+
+/* 關閉後消失 */
 closeBtn.onclick = () => {
   modal.classList.remove("show");
-
-  if (currentCard) {
-    currentCard.classList.add("hide", "used");
-  }
-
+  if (currentCard) currentCard.classList.add("hide", "used");
   currentCard = null;
 };
 </script>
