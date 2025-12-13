@@ -107,10 +107,25 @@ h2 {
 
 /* 得分按鈕 */
 .score-buttons button {
-  width: 100%;
-  margin: 6px 0;
+  background-color: #ff9800;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  margin: 5px 0;
   padding: 10px;
-  font-size: 16px;
+  width: 100%;
+  cursor: pointer;
+}
+
+/* 修改分數按鈕 */
+#scoreboard button {
+  background-color: #2196f3;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  padding: 6px;
   cursor: pointer;
 }
 </style>
@@ -138,7 +153,7 @@ h2 {
 /* ===== 基本設定 ===== */
 const categories = ["歷史", "人文", "數學", "常識", "科學"];
 const values = [100, 200, 300, 400];
-const teams = ["A隊", "B隊", "C隊", "D隊", "E隊"];
+const teams = ["第一隊", "第二隊", "第三隊", "第四隊", "第五隊"];
 
 const scores = Array(teams.length).fill(0);
 
@@ -180,15 +195,21 @@ let currentCard = null;
 let currentValue = 0;
 
 /* ===== 計分板 ===== */
+let editMode = false;
+
+function toggleEditScores() {
+  editMode = !editMode; // 切換編輯模式
+  renderScoreboard();
+}
+
 function renderScoreboard() {
   scoreboard.innerHTML = "";
 
-  // 分數修改按鈕
+  // 修改分數按鈕
   const editDiv = document.createElement("div");
   editDiv.style.gridColumn = "1 / -1";
   const editBtn = document.createElement("button");
-  editBtn.textContent = "修改分數";
-  editBtn.style.margin = "5px";
+  editBtn.textContent = editMode ? "退出修改模式" : "修改分數";
   editBtn.onclick = toggleEditScores;
   editDiv.appendChild(editBtn);
   scoreboard.appendChild(editDiv);
@@ -196,39 +217,26 @@ function renderScoreboard() {
   teams.forEach((team, i) => {
     const div = document.createElement("div");
     div.className = "team";
-    div.innerHTML = `${team}<span>${scores[i]}</span>`;
     div.dataset.teamIndex = i;
-    scoreboard.appendChild(div);
-  });
-}
-renderScoreboard();
+    div.innerHTML = `${team}<span>${scores[i]}</span>`;
 
-/* ===== 分數編輯模式 ===== */
-let editMode = false;
-function toggleEditScores() {
-  editMode = !editMode;
-  renderScoreboard();
-
-  if(editMode) {
-    // 每個隊伍加 + / - 按鈕
-    const teamDivs = document.querySelectorAll(".team");
-    teamDivs.forEach(div => {
-      const i = div.dataset.teamIndex;
+    if(editMode) {
       const btnPlus = document.createElement("button");
       btnPlus.textContent = "+";
-      btnPlus.style.margin = "2px";
       btnPlus.onclick = () => { scores[i] += 100; renderScoreboard(); };
 
       const btnMinus = document.createElement("button");
       btnMinus.textContent = "-";
-      btnMinus.style.margin = "2px";
       btnMinus.onclick = () => { scores[i] -= 100; renderScoreboard(); };
 
       div.appendChild(btnPlus);
       div.appendChild(btnMinus);
-    });
-  }
+    }
+
+    scoreboard.appendChild(div);
+  });
 }
+renderScoreboard();
 
 /* ===== 標題 ===== */
 categories.forEach(cat => {
@@ -275,7 +283,7 @@ function addScore(teamIndex) {
   closeQuestion();
 }
 
-/* ===== 關閉 ===== */
+/* ===== 關閉題目 ===== */
 function closeQuestion() {
   modal.classList.remove("show");
   if (currentCard) currentCard.classList.add("hide", "used");
@@ -284,3 +292,6 @@ function closeQuestion() {
 
 closeBtn.onclick = closeQuestion;
 </script>
+
+</body>
+</html>
