@@ -15,25 +15,48 @@ body {
 }
 
 h2 {
-  margin: 12px 0;
+  margin: 10px 0;
 }
 
+/* 計分板 */
+#scoreboard {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  max-width: 360px;
+  margin: 10px auto;
+}
+
+.team {
+  background: #222;
+  border-radius: 6px;
+  padding: 6px 0;
+  font-size: 14px;
+}
+
+.team span {
+  display: block;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* 題目表格 */
 #board {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
+  gap: 8px;
   max-width: 360px;
   margin: auto;
 }
 
-/* 分類標題 */
+/* 分類 */
 .category {
   font-weight: bold;
   font-size: 14px;
   padding: 6px 0;
 }
 
-/* 分數卡片 */
+/* 卡片 */
 .card {
   background: #1e90ff;
   border-radius: 8px;
@@ -54,7 +77,7 @@ h2 {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.8);
+  background: rgba(0,0,0,0.85);
   z-index: 999;
 }
 
@@ -68,11 +91,10 @@ h2 {
   background: white;
   color: black;
   width: 90%;
-  max-width: 400px;
+  max-width: 420px;
   border-radius: 10px;
   padding: 16px;
   position: relative;
-  text-align: left;
 }
 
 #closeBtn {
@@ -82,6 +104,15 @@ h2 {
   font-size: 22px;
   cursor: pointer;
 }
+
+/* 得分按鈕 */
+.score-buttons button {
+  width: 100%;
+  margin: 6px 0;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
 </style>
 </head>
 
@@ -89,6 +120,10 @@ h2 {
 
 <h2>🎮 分類題目遊戲</h2>
 
+<!-- 計分板 -->
+<div id="scoreboard"></div>
+
+<!-- 題目牆 -->
 <div id="board"></div>
 
 <!-- 題目視窗 -->
@@ -100,44 +135,63 @@ h2 {
 </div>
 
 <script>
+/* ===== 基本設定 ===== */
 const categories = ["歷史", "人文", "數學", "常識", "科學"];
 const values = [100, 200, 300, 400];
+const teams = ["第一隊", "第二隊", "第三隊", "第四隊", "第五隊"];
 
-/* 題目資料 */
+const scores = Array(teams.length).fill(0);
+
+/* ===== 題目資料（示例） ===== */
 const questions = [
-  { category: "歷史", value: 100, question: "秦始皇統一中國是哪個朝代？" },
-  { category: "人文", value: 100, question: "四書之一是什麼？" },
-  { category: "數學", value: 100, question: "5 + 5 = ?" },
-  { category: "常識", value: 100, question: "一年有幾個月？" },
-  { category: "科學", value: 100, question: "水的化學式是什麼？" },
+  { category:"歷史", value:100, question:"秦始皇統一中國是哪個朝代？" },
+  { category:"人文", value:100, question:"四書之一是什麼？" },
+  { category:"數學", value:100, question:"5 + 5 = ?" },
+  { category:"常識", value:100, question:"一年有幾個月？" },
+  { category:"科學", value:100, question:"水的化學式是什麼？" },
 
-  { category: "歷史", value: 200, question: "清朝最後一位皇帝是誰？" },
-  { category: "人文", value: 200, question: "蒙娜麗莎是誰畫的？" },
-  { category: "數學", value: 200, question: "10 × 10 = ?" },
-  { category: "常識", value: 200, question: "台灣的首都是哪裡？" },
-  { category: "科學", value: 200, question: "地球是第幾顆行星？" },
+  { category:"歷史", value:200, question:"清朝最後一位皇帝是誰？" },
+  { category:"人文", value:200, question:"蒙娜麗莎是誰畫的？" },
+  { category:"數學", value:200, question:"10 × 10 = ?" },
+  { category:"常識", value:200, question:"台灣的首都是哪裡？" },
+  { category:"科學", value:200, question:"地球是第幾顆行星？" },
 
-  { category: "歷史", value: 300, question: "一戰爆發於哪一年？" },
-  { category: "人文", value: 300, question: "莎士比亞是哪國人？" },
-  { category: "數學", value: 300, question: "√16 = ?" },
-  { category: "常識", value: 300, question: "彩虹有幾種顏色？" },
-  { category: "科學", value: 300, question: "人類需要呼吸哪種氣體？" },
+  { category:"歷史", value:300, question:"第一次世界大戰爆發於哪一年？" },
+  { category:"人文", value:300, question:"莎士比亞是哪國人？" },
+  { category:"數學", value:300, question:"√16 = ?" },
+  { category:"常識", value:300, question:"彩虹有幾種顏色？" },
+  { category:"科學", value:300, question:"人類呼吸哪種氣體？" },
 
-  { category: "歷史", value: 400, question: "工業革命起源於哪一國？" },
-  { category: "人文", value: 400, question: "清明上河圖是誰畫的？" },
-  { category: "數學", value: 400, question: "直角三角形有幾個直角？" },
-  { category: "常識", value: 400, question: "一天有幾小時？" },
-  { category: "科學", value: 400, question: "光速約多少？" }
+  { category:"歷史", value:400, question:"工業革命起源於哪一國？" },
+  { category:"人文", value:400, question:"清明上河圖是誰畫的？" },
+  { category:"數學", value:400, question:"直角三角形有幾個直角？" },
+  { category:"常識", value:400, question:"一天有幾小時？" },
+  { category:"科學", value:400, question:"光速大約是多少？" }
 ];
 
+/* ===== DOM ===== */
+const scoreboard = document.getElementById("scoreboard");
 const board = document.getElementById("board");
 const modal = document.getElementById("modal");
 const modalBody = document.getElementById("modalBody");
 const closeBtn = document.getElementById("closeBtn");
 
 let currentCard = null;
+let currentValue = 0;
 
-/* 標題列 */
+/* ===== 計分板 ===== */
+function renderScoreboard() {
+  scoreboard.innerHTML = "";
+  teams.forEach((team, i) => {
+    const div = document.createElement("div");
+    div.className = "team";
+    div.innerHTML = `${team}<span>${scores[i]}</span>`;
+    scoreboard.appendChild(div);
+  });
+}
+renderScoreboard();
+
+/* ===== 標題 ===== */
 categories.forEach(cat => {
   const div = document.createElement("div");
   div.className = "category";
@@ -145,27 +199,29 @@ categories.forEach(cat => {
   board.appendChild(div);
 });
 
-/* 分數格子（只顯示分數） */
+/* ===== 卡片 ===== */
 values.forEach(value => {
   categories.forEach(cat => {
-    const q = questions.find(
-      item => item.category === cat && item.value === value
-    );
-
+    const q = questions.find(x => x.category === cat && x.value === value);
     const card = document.createElement("div");
     card.className = "card";
-    card.textContent = value; // ⭐ 只有分數
+    card.textContent = value;
 
     card.onclick = () => {
       if (card.classList.contains("used")) return;
 
       currentCard = card;
+      currentValue = value;
 
       modalBody.innerHTML = `
         <h3>${cat}｜${value} 分</h3>
         <p>${q.question}</p>
+        <div class="score-buttons">
+          ${teams.map((t,i)=>`
+            <button onclick="addScore(${i})">${t} ＋${value}</button>
+          `).join("")}
+        </div>
       `;
-
       modal.classList.add("show");
     };
 
@@ -173,12 +229,21 @@ values.forEach(value => {
   });
 });
 
-/* 關閉後消失 */
-closeBtn.onclick = () => {
+/* ===== 加分 ===== */
+function addScore(teamIndex) {
+  scores[teamIndex] += currentValue;
+  renderScoreboard();
+  closeQuestion();
+}
+
+/* ===== 關閉 ===== */
+function closeQuestion() {
   modal.classList.remove("show");
   if (currentCard) currentCard.classList.add("hide", "used");
   currentCard = null;
-};
+}
+
+closeBtn.onclick = closeQuestion;
 </script>
 
 </body>
