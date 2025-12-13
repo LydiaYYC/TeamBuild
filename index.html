@@ -138,11 +138,11 @@ h2 {
 /* ===== 基本設定 ===== */
 const categories = ["歷史", "人文", "數學", "常識", "科學"];
 const values = [100, 200, 300, 400];
-const teams = ["A", "B", "C", "D", "E"];
+const teams = ["A隊", "B隊", "C隊", "D隊", "E隊"];
 
 const scores = Array(teams.length).fill(0);
 
-/* ===== 題目資料（示例） ===== */
+/* ===== 題目資料 ===== */
 const questions = [
   { category:"歷史", value:100, question:"秦始皇統一中國是哪個朝代？" },
   { category:"人文", value:100, question:"四書之一是什麼？" },
@@ -182,14 +182,53 @@ let currentValue = 0;
 /* ===== 計分板 ===== */
 function renderScoreboard() {
   scoreboard.innerHTML = "";
+
+  // 分數修改按鈕
+  const editDiv = document.createElement("div");
+  editDiv.style.gridColumn = "1 / -1";
+  const editBtn = document.createElement("button");
+  editBtn.textContent = "修改分數";
+  editBtn.style.margin = "5px";
+  editBtn.onclick = toggleEditScores;
+  editDiv.appendChild(editBtn);
+  scoreboard.appendChild(editDiv);
+
   teams.forEach((team, i) => {
     const div = document.createElement("div");
     div.className = "team";
     div.innerHTML = `${team}<span>${scores[i]}</span>`;
+    div.dataset.teamIndex = i;
     scoreboard.appendChild(div);
   });
 }
 renderScoreboard();
+
+/* ===== 分數編輯模式 ===== */
+let editMode = false;
+function toggleEditScores() {
+  editMode = !editMode;
+  renderScoreboard();
+
+  if(editMode) {
+    // 每個隊伍加 + / - 按鈕
+    const teamDivs = document.querySelectorAll(".team");
+    teamDivs.forEach(div => {
+      const i = div.dataset.teamIndex;
+      const btnPlus = document.createElement("button");
+      btnPlus.textContent = "+";
+      btnPlus.style.margin = "2px";
+      btnPlus.onclick = () => { scores[i] += 100; renderScoreboard(); };
+
+      const btnMinus = document.createElement("button");
+      btnMinus.textContent = "-";
+      btnMinus.style.margin = "2px";
+      btnMinus.onclick = () => { scores[i] -= 100; renderScoreboard(); };
+
+      div.appendChild(btnPlus);
+      div.appendChild(btnMinus);
+    });
+  }
+}
 
 /* ===== 標題 ===== */
 categories.forEach(cat => {
@@ -245,6 +284,3 @@ function closeQuestion() {
 
 closeBtn.onclick = closeQuestion;
 </script>
-
-</body>
-</html>
