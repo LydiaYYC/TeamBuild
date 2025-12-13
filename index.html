@@ -1,0 +1,144 @@
+<details>
+<summary>📄 點開貼上 index.html（手機可用完整版）</summary>
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>百萬大富翁題目遊戲</title>
+
+<style>
+body {
+  background: #0b1c3d;
+  color: white;
+  font-family: Arial;
+  text-align: center;
+}
+
+#board {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  max-width: 360px;
+  margin: auto;
+}
+
+.card {
+  perspective: 1000px;
+}
+
+.card-inner {
+  width: 160px;
+  height: 120px;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+  position: absolute;
+  width: 160px;
+  height: 120px;
+  backface-visibility: hidden;
+  border-radius: 8px;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.card-front {
+  background: #1e90ff;
+  font-size: 22px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-back {
+  background: #f5f5f5;
+  color: black;
+  transform: rotateY(180deg);
+}
+
+.card-back img {
+  max-width: 100%;
+  max-height: 45px;
+  display: block;
+  margin: 0 auto 5px;
+}
+
+.card-back audio {
+  width: 100%;
+  margin-bottom: 5px;
+}
+</style>
+</head>
+
+<body>
+<h2>🎮 百萬大富翁題目</h2>
+<div id="board"></div>
+
+<script>
+const questions = [
+  { value: 200, question: "1 + 1 = ?" },
+  { value: 200, question: "太陽從哪邊升起？" },
+  { value: 200, question: "請聽聲音，這是什麼動物？", audio: "audio/dog.mp3" },
+  { value: 200, question: "這是哪個城市？", image: "images/taipei.jpg" },
+
+  { value: 300, question: "一年有幾個月？" },
+  { value: 300, question: "水的化學式？" },
+  { value: 300, question: "下圖是什麼？", image: "images/rainbow.jpg" },
+  { value: 300, question: "這是什麼樂器？", audio: "audio/violin.mp3" },
+
+  { value: 500, question: "HTML 是做什麼的？" },
+  { value: 500, question: "人體最大的器官？" },
+  { value: 500, question: "這是哪一國國旗？", image: "images/japan.png" },
+  { value: 500, question: "光速有多快？" },
+
+  { value: 1000, question: "相對論是誰提出的？" },
+  { value: 1000, question: "CSS 的用途是？" },
+  { value: 1000, question: "DNA 是什麼縮寫？" },
+  { value: 1000, question: "二戰結束於哪一年？" },
+
+  { value: 1500, question: "請聽音樂，這是哪首歌？", audio: "audio/song.mp3" },
+  { value: 1500, question: "黑洞如何形成？" },
+  { value: 1500, question: "量子不確定性原理由誰提出？" },
+  { value: 1500, question: "JS 的事件冒泡是什麼？" }
+];
+
+const board = document.getElementById("board");
+
+questions.forEach(q => {
+  const card = document.createElement("div");
+  card.className = "card";
+  card.innerHTML = `
+    <div class="card-inner">
+      <div class="card-front">${q.value} 分</div>
+      <div class="card-back">
+        ${q.image ? `<img src="${q.image}">` : ""}
+        ${q.audio ? `<audio src="${q.audio}"></audio>` : ""}
+        <div>${q.question}</div>
+      </div>
+    </div>
+  `;
+
+  card.onclick = () => {
+    card.classList.add("flipped");
+    const audio = card.querySelector("audio");
+    if (audio) {
+      audio.currentTime = 0;
+      audio.play();
+    }
+  };
+
+  board.appendChild(card);
+});
+</script>
+</body>
+</html>
+
+</details>
