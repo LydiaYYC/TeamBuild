@@ -138,7 +138,7 @@ h2 {
 /* ===== 基本設定 ===== */
 const categories = ["歷史", "人文", "數學", "常識", "科學"];
 const values = [100, 200, 300, 400];
-const teams = ["第一隊", "第二隊", "第三隊", "第四隊", "第五隊"];
+const teams = ["A", "B", "C", "D", "E"];
 
 const scores = Array(teams.length).fill(0);
 
@@ -218,7 +218,7 @@ values.forEach(value => {
         <p>${q.question}</p>
         <div class="score-buttons">
           ${teams.map((t,i)=>`
-            <button onclick="addScore(${i})">${t} ＋${value}</button>
+            <button onclick="addScore(${i})">${t}</button>
           `).join("")}
         </div>
       `;
