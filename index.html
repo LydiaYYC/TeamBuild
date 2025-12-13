@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>分類題目遊戲</title>
+<title>🧠</title>
 
 <style>
 body {
@@ -140,7 +140,7 @@ h2 {
 
 <body>
 
-<h2>🎮 分類題目遊戲</h2>
+<h2>🧠</h2>
 
 <!-- 計分板 -->
 <div id="scoreboard"></div>
@@ -160,7 +160,7 @@ h2 {
 /* ===== 基本設定 ===== */
 const categories = ["歷史", "人文", "數學", "常識", "科學"];
 const values = [100, 200, 300, 400];
-const teams = ["第一隊", "第二隊", "第三隊", "第四隊", "第五隊"];
+const teams = ["Team A", "Team B", "Team C", "Team D", "Team E"];
 
 const scores = Array(teams.length).fill(0);
 
@@ -216,7 +216,7 @@ function renderScoreboard() {
   const editDiv = document.createElement("div");
   editDiv.style.gridColumn = "1 / -1";
   const editBtn = document.createElement("button");
-  editBtn.textContent = editMode ? "退出修改模式" : "修改分數";
+  editBtn.textContent = editMode ? "Exit" : "Edit";
   editBtn.onclick = toggleEditScores;
   editDiv.appendChild(editBtn);
   scoreboard.appendChild(editDiv);
