@@ -4,202 +4,39 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>機制問答</title>
-
 <style>
-body {
-  margin: 0;
-  background: #0b1c3d;
-  color: white;
-  font-family: Arial, sans-serif;
-}
-
-#audioProgress {
-  width: 80%;
-  margin: 10px auto;
-  display: block;
-} 
-
-/* ===== 標題 ===== */
-h2 {
-  text-align: center;
-  margin: 10px 0;
-}
-
-/* ===== 計分板（橫排） ===== */
-#scoreboard {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin: 10px auto 20px;
-}
-
-.team {
-  background: #222;
-  border-radius: 8px;
-  padding: 10px 16px;
-  text-align: center;
-  min-width: 120px;
-}
-
-.team span {
-  display: block;
-  font-size: 22px;
-  font-weight: bold;
-  margin-top: 4px;
-}
-
-/* ===== 題目牆 ===== */
-#board {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
-  max-width: 1100px;
-  margin: auto;
-  padding-bottom: 40px;
-}
-
-/* 分類標題 */
-.category {
-  font-weight: bold;
-  font-size: 18px;
-  padding: 10px 0;
-  text-align: center;
-}
-
-/* 分數卡片 */
-.card {
-  background: #1e90ff;
-  border-radius: 10px;
-  padding: 26px 0;
-  font-size: 26px;
-  font-weight: bold;
-  cursor: pointer;
-  text-align: center;
-}
-
-.card:hover {
-  background: #4aa3ff;
-}
-
-.card.hide {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s;
-}
-
-/* ===== 題目彈窗 ===== */
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.85);
-  z-index: 999;
-}
-
-.modal.show {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal-content {
-  background: white;
-  color: black;
-  width: 70%;
-  max-width: 900px;
-  border-radius: 12px;
-  padding: 24px;
-  position: relative;
-}
-
-#closeBtn {
-  position: absolute;
-  top: 12px;
-  right: 16px;
-  font-size: 26px;
-  cursor: pointer;
-}
-
-/* ===== 題目內容 ===== */
-.modal-content h3 {
-  margin-top: 0;
-}
-
-.modal-content img {
-  max-width: 100%;
-  max-height: 400px;
-  display: block;
-  margin: 10px auto;
-}
-
-.modal-content audio {
-  display: block;
-  margin: 10px auto;
-  width: 80%;
-}
-
-/* ===== 加分按鈕（單排） ===== */
-.score-buttons {
-  display: flex;
-  gap: 8px;
-  margin-top: 20px;
-}
-
-.score-buttons button {
-  flex: 1;
-  padding: 10px;
-  font-size: 16px;
-  background-color: #ff9800;
-  color: white;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-/* ===== 修改分數 ===== */
-#scoreboard button {
-  margin-top: 6px;
-  background: #2196f3;
-  border: none;
-  color: white;
-  padding: 4px 8px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-  
-.audio-box {
-  text-align: center;
-  margin: 10px 0;
-}
-
-.audio-btn {
-  padding: 6px 12px;
-  font-size: 14px;
-  background: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.audio-btn:hover {
-  background: #43a047;
-}  
+body { margin:0; background:#0b1c3d; color:white; font-family:Arial,sans-serif;}
+#audioProgress { width:80%; margin:10px auto; display:block;}
+h2 { text-align:center; margin:10px 0;}
+#scoreboard { display:flex; justify-content:center; gap:12px; margin:10px auto 20px;}
+.team { background:#222; border-radius:8px; padding:10px 16px; text-align:center; min-width:120px;}
+.team span { display:block; font-size:22px; font-weight:bold; margin-top:4px;}
+#board { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; max-width:1100px; margin:auto; padding-bottom:40px;}
+.category { font-weight:bold; font-size:18px; padding:10px 0; text-align:center;}
+.card { background:#1e90ff; border-radius:10px; padding:26px 0; font-size:26px; font-weight:bold; cursor:pointer; text-align:center;}
+.card:hover { background:#4aa3ff;}
+.card.hide { opacity:0; pointer-events:none; transition:opacity 0.3s;}
+.modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:999;}
+.modal.show { display:flex; align-items:center; justify-content:center;}
+.modal-content { background:white; color:black; width:70%; max-width:900px; border-radius:12px; padding:24px; position:relative;}
+#closeBtn { position:absolute; top:12px; right:16px; font-size:26px; cursor:pointer;}
+.modal-content h3 { margin-top:0;}
+.modal-content img { max-width:100%; max-height:400px; display:block; margin:10px auto;}
+.score-buttons { display:flex; gap:8px; margin-top:20px;}
+.score-buttons button { flex:1; padding:10px; font-size:16px; background-color:#ff9800; color:white; font-weight:bold; border:none; border-radius:8px; cursor:pointer;}
+#scoreboard button { margin-top:6px; background:#2196f3; border:none; color:white; padding:4px 8px; border-radius:6px; cursor:pointer;}
+.audio-box { text-align:center; margin:10px 0;}
+.audio-btn { padding:6px 12px; font-size:14px; background:#4caf50; color:white; border:none; border-radius:6px; cursor:pointer;}
+.audio-btn:hover { background:#43a047;}
 </style>
 </head>
-
 <body>
 
 <h2>機制問答</h2>
 
-<!-- 計分板 -->
 <div id="scoreboard"></div>
-
-<!-- 題目牆 -->
 <div id="board"></div>
 
-<!-- 題目彈窗 -->
 <div id="modal" class="modal">
   <div class="modal-content">
     <span id="closeBtn">✖</span>
@@ -208,40 +45,23 @@ h2 {
 </div>
 
 <script>
-/* ===== 基本設定 ===== */
-const categories = ["動漫", "人文", "數學", "常識", "猜歌"];
-const values = [100, 200, 300, 400];
-const teams = ["A隊", "B隊", "C隊", "D隊", "E隊"];
+const categories = ["動漫","人文","數學","常識","猜歌"];
+const values = [100,200,300,400];
+const teams = ["A隊","B隊","C隊","D隊","E隊"];
 const scores = Array(teams.length).fill(0);
 
-/* ===== 題目資料（可放圖片） ===== */
 const questions = [
-  { category:"動漫", value:100, question:"我是誰？", img:"images/guess.png", audio:null },
-  { category:"人文", value:100, question:"四書之一是什麼？", img:null, audio:null },
-  { category:"數學", value:100, question:"5 + 5 = ?", img:null, audio:null },
-  { category:"常識", value:100, question:"一年有幾個月？", img:null, audio:null },
-  { category:"猜歌", value:100, question:"這首歌的歌名是？", img:null, audio:"Audio/Audio1.mp3" },
-
-  { category:"歷史", value:200, question:"清朝最後一位皇帝是誰？", img:null, audio:null },
-  { category:"人文", value:200, question:"蒙娜麗莎是誰畫的？", img:null, audio:null },
-  { category:"數學", value:200, question:"10 × 10 = ?", img:null, audio:null },
-  { category:"常識", value:200, question:"台灣的首都是哪裡？", img:null, audio:null },
-  { category:"猜歌", value:200, question:"地球是第幾顆行星？", img:null, audio:null },
-
-  { category:"歷史", value:300, question:"第一次世界大戰爆發於哪一年？", img:null, audio:null },
-  { category:"人文", value:300, question:"莎士比亞是哪國人？", img:null, audio:null },
-  { category:"數學", value:300, question:"√16 = ?", img:null, audio:null },
-  { category:"常識", value:300, question:"彩虹有幾種顏色？", img:null, audio:null },
-  { category:"猜歌", value:300, question:"人類呼吸哪種氣體？", img:null, audio:null },
-
-  { category:"歷史", value:400, question:"工業革命起源於哪一國？", img:null, audio:null },
-  { category:"人文", value:400, question:"清明上河圖是誰畫的？", img:null, audio:null },
-  { category:"數學", value:400, question:"直角三角形有幾個直角？", img:null, audio:null },
-  { category:"常識", value:400, question:"一天有幾小時？", img:null, audio:null },
-  { category:"猜歌", value:400, question:"光速大約是多少？", img:null, audio:null }
+  {category:"動漫", value:100, question:"我是誰？", img:"images/guess.png", audio:null},
+  {category:"人文", value:100, question:"四書之一是什麼？", img:null, audio:null},
+  {category:"數學", value:100, question:"5 + 5 = ?", img:null, audio:null},
+  {category:"常識", value:100, question:"一年有幾個月？", img:null, audio:null},
+  {category:"猜歌", value:100, question:"這首歌的歌名是？", img:null, audio:"Audio/Audio1.mp3"},
+  {category:"猜歌", value:200, question:"這首歌的歌名是？", img:null, audio:"Audio/Audio2.mp3"},
+  {category:"猜歌", value:300, question:"這首歌的歌名是？", img:null, audio:"Audio/Audio3.mp3"},
+  {category:"猜歌", value:400, question:"這首歌的歌名是？", img:null, audio:"Audio/Audio4.mp3"},
+  // 其他題目照原本加...
 ];
 
-/* ===== DOM ===== */
 const scoreboard = document.getElementById("scoreboard");
 const board = document.getElementById("board");
 const modal = document.getElementById("modal");
@@ -251,157 +71,115 @@ const closeBtn = document.getElementById("closeBtn");
 let currentCard = null;
 let currentValue = 0;
 let editMode = false;
-
-/* ===== 計分板 ===== */
-function toggleEditScores() {
-  editMode = !editMode;
-  renderScoreboard();
-}
+let isPlaying = false;
+let progressInterval;
 
 function renderScoreboard() {
   scoreboard.innerHTML = "";
-
-  teams.forEach((team, i) => {
+  teams.forEach((team,i)=>{
     const div = document.createElement("div");
     div.className = "team";
     div.innerHTML = `${team}<span>${scores[i]}</span>`;
-
-    if (editMode) {
-      const plus = document.createElement("button");
-      plus.textContent = "+";
-      plus.onclick = () => { scores[i] += 100; renderScoreboard(); };
-
-      const minus = document.createElement("button");
-      minus.textContent = "-";
-      minus.onclick = () => { scores[i] -= 100; renderScoreboard(); };
-
-      div.appendChild(plus);
-      div.appendChild(minus);
+    if(editMode){
+      const plus=document.createElement("button");
+      plus.textContent="+";
+      plus.onclick=()=>{scores[i]+=100; renderScoreboard();};
+      const minus=document.createElement("button");
+      minus.textContent="-";
+      minus.onclick=()=>{scores[i]-=100; renderScoreboard();};
+      div.appendChild(plus); div.appendChild(minus);
     }
-
     scoreboard.appendChild(div);
   });
-
-  const editBtn = document.createElement("button");
-  editBtn.textContent = editMode ? "Exit" : "Edit";
-  editBtn.onclick = toggleEditScores;
+  const editBtn=document.createElement("button");
+  editBtn.textContent=editMode?"Exit":"Edit";
+  editBtn.onclick=()=>{ editMode=!editMode; renderScoreboard(); };
   scoreboard.appendChild(editBtn);
 }
 renderScoreboard();
 
-/* ===== 題目牆 ===== */
-categories.forEach(cat => {
-  const div = document.createElement("div");
-  div.className = "category";
-  div.textContent = cat;
+categories.forEach(cat=>{
+  const div=document.createElement("div");
+  div.className="category";
+  div.textContent=cat;
   board.appendChild(div);
 });
 
-values.forEach(value => {
-  categories.forEach(cat => {
-    const q = questions.find(x => x.category === cat && x.value === value);
+values.forEach(value=>{
+  categories.forEach(cat=>{
+    const q = questions.find(x=>x.category===cat && x.value===value);
     const card = document.createElement("div");
     card.className = "card";
     card.textContent = value;
-
-    card.onclick = () => {
-      if (card.classList.contains("used")) return;
+    card.onclick = ()=>{
+      if(card.classList.contains("used")) return;
       currentCard = card;
       currentValue = value;
-
-      modalBody.innerHTML = `
-        <h3>${cat}｜${value} 分</h3>
-        ${q.img ? `<img src="${q.img}" alt="題目圖片">` : ""}
-        ${q.audio ? `
-          <div class="audio-box">
-            <button class="audio-btn" onclick="toggleAudio()">▶ 播放</button>
-            <input type="range" id="audioProgress" value="0" min="0" max="100" step="0.1" onchange="seekAudio(this)">
-            <audio id="questionAudio" src="${q.audio}"></audio>
+      modalBody.innerHTML = "";
+      if(q){
+        modalBody.innerHTML = `
+          <h3>${cat}｜${value} 分</h3>
+          ${q.img?`<img src="${q.img}" alt="題目圖片">`:""}
+          ${q.audio?`
+            <div class="audio-box">
+              <button class="audio-btn" onclick="toggleAudio()">▶ 播放</button>
+              <input type="range" id="audioProgress" value="0" min="0" max="100" step="0.1" onchange="seekAudio(this)">
+              <audio id="questionAudio" src="${q.audio}"></audio>
+            </div>`:""}
+          <p>${q.question}</p>
+          <div class="score-buttons">
+            ${teams.map((t,i)=>`<button onclick="addScore(${i})">${t}</button>`).join("")}
           </div>
-        ` : ""}
-        <p>${q.question}</p>
-        <div class="score-buttons">
-          ${teams.map((t,i)=>`<button onclick="addScore(${i})">${t}</button>`).join("")}
-        </div>
-      `;
+        `;
+      }else{
+        modalBody.innerHTML=`<h3>${cat}｜${value} 分</h3><p>題目尚未設定</p>`;
+      }
       modal.classList.add("show");
     };
-
     board.appendChild(card);
   });
 });
-  
-/* ===== 加分 ===== */
-function addScore(i) {
-  scores[i] += currentValue;
+
+function addScore(i){
+  scores[i]+=currentValue;
   renderScoreboard();
   closeQuestion();
 }
 
-closeBtn.onclick = closeQuestion;
+closeBtn.onclick=closeQuestion;
 
-let isPlaying = false;
-let progressInterval;
-
-function toggleAudio() {
-  const audio = document.getElementById("questionAudio");
-  const btn = document.querySelector(".audio-btn");
-  const progress = document.getElementById("audioProgress");
-
-  if (!audio) return;
-
-  if (isPlaying) {
-    // 暫停音樂
-    audio.pause();
-    btn.textContent = "▶ 播放";
-    clearInterval(progressInterval);
-    isPlaying = false;
-  } else {
-    // 開始播放
-    audio.play();
-    btn.textContent = "⏹ 停止";
-    isPlaying = true;
-
-    // 每 200ms 更新進度條
-    progressInterval = setInterval(() => {
-      if (audio.duration) {
-        progress.value = (audio.currentTime / audio.duration) * 100;
-      }
-    }, 200);
-
-    // 音樂播完自動重置
-    audio.onended = () => {
-      btn.textContent = "▶ 播放";
-      progress.value = 0;
-      clearInterval(progressInterval);
-      isPlaying = false;
+function toggleAudio(){
+  const audio=document.getElementById("questionAudio");
+  const btn=document.querySelector(".audio-btn");
+  const progress=document.getElementById("audioProgress");
+  if(!audio) return;
+  if(isPlaying){
+    audio.pause(); btn.textContent="▶ 播放"; clearInterval(progressInterval); isPlaying=false;
+  }else{
+    audio.play(); btn.textContent="⏹ 停止"; isPlaying=true;
+    progressInterval=setInterval(()=>{
+      if(audio.duration) progress.value=(audio.currentTime/audio.duration)*100;
+    },200);
+    audio.onended=()=>{
+      btn.textContent="▶ 播放"; progress.value=0; clearInterval(progressInterval); isPlaying=false;
     };
   }
 }
 
-// 拖動進度條跳轉音樂
-function seekAudio(el) {
-  const audio = document.getElementById("questionAudio");
-  if (!audio || !audio.duration) return;
-  audio.currentTime = (el.value / 100) * audio.duration;
+function seekAudio(el){
+  const audio=document.getElementById("questionAudio");
+  if(!audio || !audio.duration) return;
+  audio.currentTime=(el.value/100)*audio.duration;
 }
 
-// 關閉題目時停止音樂
-function closeQuestion() {
-  const audio = document.getElementById("questionAudio");
-  const progress = document.getElementById("audioProgress");
-  if (audio) {
-    audio.pause();
-    audio.currentTime = 0;
-    isPlaying = false;
-    clearInterval(progressInterval);
-  }
-  if (progress) progress.value = 0;
-
+function closeQuestion(){
+  const audio=document.getElementById("questionAudio");
+  const progress=document.getElementById("audioProgress");
+  if(audio){ audio.pause(); audio.currentTime=0; clearInterval(progressInterval); isPlaying=false;}
+  if(progress) progress.value=0;
   modal.classList.remove("show");
-  if (currentCard) currentCard.classList.add("hide","used");
+  if(currentCard) currentCard.classList.add("hide","used");
 }
-  
 </script>
 
 </body>
