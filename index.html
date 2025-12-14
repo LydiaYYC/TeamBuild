@@ -185,7 +185,7 @@ h2 {
 
 <body>
 
-<h2>機制問答>機制>幾
+<h2>機制問答
 
 <!-- 計分板 -->
 <div id="scoreboard"></div>
@@ -203,36 +203,36 @@ h2 {
 
 <script>
 /* ===== 基本設定 ===== */
-const categories = ["歷史", "人文", "數學", "常識", "科學"];
+const categories = ["動漫", "人文", "數學", "常識", "猜歌"];
 const values = [100, 200, 300, 400];
 const teams = ["A隊", "B隊", "C隊", "D隊", "E隊"];
 const scores = Array(teams.length).fill(0);
 
 /* ===== 題目資料（可放圖片） ===== */
 const questions = [
-  { category:"歷史", value:100, question:"我是誰", img:"images/guess.png" },
-  { category:"人文", value:100, question:"四書之一是什麼？", img:null },
-  { category:"數學", value:100, question:"5 + 5 = ?", img:null },
-  { category:"常識", value:100, question:"一年有幾個月？", img:null },
-  { category:"科學", value:100, question:"水的化學式是什麼？", img:null },
+  { category:"動漫", value:100, question:"我是誰", img:"images/guess.png", audio:null },
+  { category:"人文", value:100, question:"四書之一是什麼？", img:null, audio:null },
+  { category:"數學", value:100, question:"5 + 5 = ?", img:null, audio:null },
+  { category:"常識", value:100, question:"一年有幾個月？", img:null, audio:null },
+  { category:"猜歌", value:100, question:"水的化學式是什麼？", img:null, audio:null },
 
-  { category:"歷史", value:200, question:"清朝最後一位皇帝是誰？", img:null },
-  { category:"人文", value:200, question:"蒙娜麗莎是誰畫的？", img:null },
-  { category:"數學", value:200, question:"10 × 10 = ?", img:null },
-  { category:"常識", value:200, question:"台灣的首都是哪裡？", img:null },
-  { category:"科學", value:200, question:"地球是第幾顆行星？", img:null },
+  { category:"歷史", value:200, question:"清朝最後一位皇帝是誰？", img:null, audio:null },
+  { category:"人文", value:200, question:"蒙娜麗莎是誰畫的？", img:null, audio:null },
+  { category:"數學", value:200, question:"10 × 10 = ?", img:null, audio:null },
+  { category:"常識", value:200, question:"台灣的首都是哪裡？", img:null, audio:null },
+  { category:"科學", value:200, question:"地球是第幾顆行星？", img:null, audio:null },
 
-  { category:"歷史", value:300, question:"第一次世界大戰爆發於哪一年？", img:null },
-  { category:"人文", value:300, question:"莎士比亞是哪國人？", img:null },
-  { category:"數學", value:300, question:"√16 = ?", img:null },
-  { category:"常識", value:300, question:"彩虹有幾種顏色？", img:null },
-  { category:"科學", value:300, question:"人類呼吸哪種氣體？", img:null },
+  { category:"歷史", value:300, question:"第一次世界大戰爆發於哪一年？", img:null, audio:null },
+  { category:"人文", value:300, question:"莎士比亞是哪國人？", img:null, audio:null },
+  { category:"數學", value:300, question:"√16 = ?", img:null, audio:null },
+  { category:"常識", value:300, question:"彩虹有幾種顏色？", img:null, audio:null },
+  { category:"科學", value:300, question:"人類呼吸哪種氣體？", img:null, audio:null },
 
-  { category:"歷史", value:400, question:"工業革命起源於哪一國？", img:null },
-  { category:"人文", value:400, question:"清明上河圖是誰畫的？", img:null },
-  { category:"數學", value:400, question:"直角三角形有幾個直角？", img:null },
-  { category:"常識", value:400, question:"一天有幾小時？", img:null },
-  { category:"科學", value:400, question:"光速大約是多少？", img:null }
+  { category:"歷史", value:400, question:"工業革命起源於哪一國？", img:null, audio:null },
+  { category:"人文", value:400, question:"清明上河圖是誰畫的？", img:null, audio:null },
+  { category:"數學", value:400, question:"直角三角形有幾個直角？", img:null, audio:null },
+  { category:"常識", value:400, question:"一天有幾小時？", img:null, audio:null },
+  { category:"科學", value:400, question:"光速大約是多少？", img:null, audio:null }
 ];
 
 /* ===== DOM ===== */
