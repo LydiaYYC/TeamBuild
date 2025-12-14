@@ -13,6 +13,12 @@ body {
   font-family: Arial, sans-serif;
 }
 
+#audioProgress {
+  width: 80%;
+  margin: 10px auto;
+  display: block;
+} 
+
 /* ===== 標題 ===== */
 h2 {
   text-align: center;
@@ -185,7 +191,7 @@ h2 {
 
 <body>
 
-<h2>機制問答
+<h2>機制問答</h2>
 
 <!-- 計分板 -->
 <div id="scoreboard"></div>
@@ -309,6 +315,7 @@ values.forEach(value => {
         ${q.audio ? `
           <div class="audio-box">
             <button class="audio-btn" onclick="toggleAudio()">▶ 播放</button>
+            <input type="range" id="audioProgress" value="0" min="0" max="100" step="0.1" onchange="seekAudio(this)">
             <audio id="questionAudio" src="${q.audio}"></audio>
           </div>
         ` : ""}
@@ -331,43 +338,69 @@ function addScore(i) {
   closeQuestion();
 }
 
-function closeQuestion() {
-  const audio = document.getElementById("questionAudio");
-  if (audio) {
-    audio.pause();
-    audio.currentTime = 0;
-    isPlaying = false;
-  }
-
-  modal.classList.remove("show");
-  if (currentCard) currentCard.classList.add("hide","used");
-}
-
 closeBtn.onclick = closeQuestion;
 
 let isPlaying = false;
+let progressInterval;
 
 function toggleAudio() {
   const audio = document.getElementById("questionAudio");
   const btn = document.querySelector(".audio-btn");
+  const progress = document.getElementById("audioProgress");
 
   if (!audio) return;
 
   if (isPlaying) {
+    // 暫停音樂
     audio.pause();
-    audio.currentTime = 0;
     btn.textContent = "▶ 播放";
+    clearInterval(progressInterval);
+    isPlaying = false;
   } else {
+    // 開始播放
     audio.play();
     btn.textContent = "⏹ 停止";
+    isPlaying = true;
+
+    // 每 200ms 更新進度條
+    progressInterval = setInterval(() => {
+      if (audio.duration) {
+        progress.value = (audio.currentTime / audio.duration) * 100;
+      }
+    }, 200);
+
+    // 音樂播完自動重置
     audio.onended = () => {
       btn.textContent = "▶ 播放";
+      progress.value = 0;
+      clearInterval(progressInterval);
       isPlaying = false;
     };
-    
-    isPlaying = true;
   }
-}  
+}
+
+// 拖動進度條跳轉音樂
+function seekAudio(el) {
+  const audio = document.getElementById("questionAudio");
+  if (!audio || !audio.duration) return;
+  audio.currentTime = (el.value / 100) * audio.duration;
+}
+
+// 關閉題目時停止音樂
+function closeQuestion() {
+  const audio = document.getElementById("questionAudio");
+  const progress = document.getElementById("audioProgress");
+  if (audio) {
+    audio.pause();
+    audio.currentTime = 0;
+    isPlaying = false;
+    clearInterval(progressInterval);
+  }
+  if (progress) progress.value = 0;
+
+  modal.classList.remove("show");
+  if (currentCard) currentCard.classList.add("hide","used");
+}
   
 </script>
 
