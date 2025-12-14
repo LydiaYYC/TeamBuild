@@ -126,6 +126,12 @@ h2 {
   margin: 10px auto;
 }
 
+.modal-content audio {
+  display: block;
+  margin: 10px auto;
+  width: 80%;
+}
+
 /* ===== 加分按鈕（單排） ===== */
 .score-buttons {
   display: flex;
@@ -155,6 +161,25 @@ h2 {
   border-radius: 6px;
   cursor: pointer;
 }
+  
+.audio-box {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.audio-btn {
+  padding: 6px 12px;
+  font-size: 14px;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.audio-btn:hover {
+  background: #43a047;
+}  
 </style>
 </head>
 
@@ -185,29 +210,29 @@ const scores = Array(teams.length).fill(0);
 
 /* ===== 題目資料（可放圖片） ===== */
 const questions = [
-  { category:"歷史", value:100, question:"秦始皇統一中國是哪個朝代？" },
-  { category:"人文", value:100, question:"四書之一是什麼？" },
-  { category:"數學", value:100, question:"5 + 5 = ?" },
-  { category:"常識", value:100, question:"一年有幾個月？" },
-  { category:"科學", value:100, question:"水的化學式是什麼？" },
+  { category:"歷史", value:100, question:"我是誰", img:null },
+  { category:"人文", value:100, question:"四書之一是什麼？", img:null },
+  { category:"數學", value:100, question:"5 + 5 = ?", img:null },
+  { category:"常識", value:100, question:"一年有幾個月？", img:null },
+  { category:"科學", value:100, question:"水的化學式是什麼？", img:null },
 
-  { category:"歷史", value:200, question:"清朝最後一位皇帝是誰？" },
-  { category:"人文", value:200, question:"蒙娜麗莎是誰畫的？" },
-  { category:"數學", value:200, question:"10 × 10 = ?" },
-  { category:"常識", value:200, question:"台灣的首都是哪裡？" },
-  { category:"科學", value:200, question:"地球是第幾顆行星？" },
+  { category:"歷史", value:200, question:"清朝最後一位皇帝是誰？", img:null },
+  { category:"人文", value:200, question:"蒙娜麗莎是誰畫的？", img:null },
+  { category:"數學", value:200, question:"10 × 10 = ?", img:null },
+  { category:"常識", value:200, question:"台灣的首都是哪裡？", img:null },
+  { category:"科學", value:200, question:"地球是第幾顆行星？", img:null },
 
-  { category:"歷史", value:300, question:"第一次世界大戰爆發於哪一年？" },
-  { category:"人文", value:300, question:"莎士比亞是哪國人？" },
-  { category:"數學", value:300, question:"√16 = ?" },
-  { category:"常識", value:300, question:"彩虹有幾種顏色？" },
-  { category:"科學", value:300, question:"人類呼吸哪種氣體？" },
+  { category:"歷史", value:300, question:"第一次世界大戰爆發於哪一年？", img:null },
+  { category:"人文", value:300, question:"莎士比亞是哪國人？", img:null },
+  { category:"數學", value:300, question:"√16 = ?", img:null },
+  { category:"常識", value:300, question:"彩虹有幾種顏色？", img:null },
+  { category:"科學", value:300, question:"人類呼吸哪種氣體？", img:null },
 
-  { category:"歷史", value:400, question:"工業革命起源於哪一國？" },
-  { category:"人文", value:400, question:"清明上河圖是誰畫的？" },
-  { category:"數學", value:400, question:"直角三角形有幾個直角？" },
-  { category:"常識", value:400, question:"一天有幾小時？" },
-  { category:"科學", value:400, question:"光速大約是多少？" }
+  { category:"歷史", value:400, question:"工業革命起源於哪一國？", img:null },
+  { category:"人文", value:400, question:"清明上河圖是誰畫的？", img:null },
+  { category:"數學", value:400, question:"直角三角形有幾個直角？", img:null },
+  { category:"常識", value:400, question:"一天有幾小時？", img:null },
+  { category:"科學", value:400, question:"光速大約是多少？", img:null }
 ];
 
 /* ===== DOM ===== */
@@ -280,6 +305,13 @@ values.forEach(value => {
 
       modalBody.innerHTML = `
         <h3>${cat}｜${value} 分</h3>
+        ${q.img ? `<img src="${q.img}" alt="題目圖片">` : ""}
+        ${q.audio ? `
+          <div class="audio-box">
+            <button class="audio-btn" onclick="toggleAudio()">▶ 播放</button>
+            <audio id="questionAudio" src="${q.audio}"></audio>
+          </div>
+        ` : ""}
         <p>${q.question}</p>
         <div class="score-buttons">
           ${teams.map((t,i)=>`<button onclick="addScore(${i})">${t}</button>`).join("")}
@@ -291,7 +323,7 @@ values.forEach(value => {
     board.appendChild(card);
   });
 });
-
+  
 /* ===== 加分 ===== */
 function addScore(i) {
   scores[i] += currentValue;
@@ -300,11 +332,45 @@ function addScore(i) {
 }
 
 function closeQuestion() {
+  const audio = document.getElementById("questionAudio");
+  if (audio) {
+    audio.pause();
+    audio.currentTime = 0;
+    isPlaying = false;
+  }
+
   modal.classList.remove("show");
   if (currentCard) currentCard.classList.add("hide","used");
 }
 
 closeBtn.onclick = closeQuestion;
+
+let isPlaying = false;
+
+function toggleAudio() {
+  const audio = document.getElementById("questionAudio");
+  const btn = document.querySelector(".audio-btn");
+
+  if (!audio) return;
+
+  if (isPlaying) {
+    audio.pause();
+    audio.currentTime = 0;
+    btn.textContent = "▶ 播放";
+  } else {
+    audio.play();
+    btn.textContent = "⏹ 停止";
+    audio.onended = () => {
+      btn.textContent = "▶ 播放";
+      isPlaying = false;
+    };
+    
+    isPlaying = true;
+  }
+
+  isPlaying = !isPlaying;
+}  
+  
 </script>
 
 </body>
