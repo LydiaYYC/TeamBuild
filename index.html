@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🧠</title>
+<title>機制問答</title>
 
 <style>
 body {
@@ -11,59 +11,68 @@ body {
   background: #0b1c3d;
   color: white;
   font-family: Arial, sans-serif;
-  text-align: center;
 }
 
+/* ===== 標題 ===== */
 h2 {
+  text-align: center;
   margin: 10px 0;
 }
 
-/* 計分板 */
+/* ===== 計分板（橫排） ===== */
 #scoreboard {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 6px;
-  max-width: 360px;
-  margin: 10px auto;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 10px auto 20px;
 }
 
 .team {
   background: #222;
-  border-radius: 6px;
-  padding: 6px 0;
-  font-size: 14px;
+  border-radius: 8px;
+  padding: 10px 16px;
+  text-align: center;
+  min-width: 120px;
 }
 
 .team span {
   display: block;
-  font-size: 18px;
+  font-size: 22px;
   font-weight: bold;
+  margin-top: 4px;
 }
 
-/* 題目表格 */
+/* ===== 題目牆 ===== */
 #board {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 8px;
-  max-width: 360px;
+  gap: 12px;
+  max-width: 1100px;
   margin: auto;
+  padding-bottom: 40px;
 }
 
-/* 分類 */
+/* 分類標題 */
 .category {
   font-weight: bold;
-  font-size: 14px;
-  padding: 6px 0;
+  font-size: 18px;
+  padding: 10px 0;
+  text-align: center;
 }
 
-/* 卡片 */
+/* 分數卡片 */
 .card {
   background: #1e90ff;
-  border-radius: 8px;
-  padding: 14px 0;
-  font-size: 18px;
+  border-radius: 10px;
+  padding: 26px 0;
+  font-size: 26px;
   font-weight: bold;
   cursor: pointer;
+  text-align: center;
+}
+
+.card:hover {
+  background: #4aa3ff;
 }
 
 .card.hide {
@@ -72,7 +81,7 @@ h2 {
   transition: opacity 0.3s;
 }
 
-/* Modal */
+/* ===== 題目彈窗 ===== */
 .modal {
   display: none;
   position: fixed;
@@ -90,49 +99,60 @@ h2 {
 .modal-content {
   background: white;
   color: black;
-  width: 90%;
-  max-width: 420px;
-  border-radius: 10px;
-  padding: 16px;
+  width: 70%;
+  max-width: 900px;
+  border-radius: 12px;
+  padding: 24px;
   position: relative;
 }
 
 #closeBtn {
   position: absolute;
-  top: 8px;
-  right: 12px;
-  font-size: 22px;
+  top: 12px;
+  right: 16px;
+  font-size: 26px;
   cursor: pointer;
 }
 
-/* 五隊加分按鈕排一行 */
+/* ===== 題目內容 ===== */
+.modal-content h3 {
+  margin-top: 0;
+}
+
+.modal-content img {
+  max-width: 100%;
+  max-height: 400px;
+  display: block;
+  margin: 10px auto;
+}
+
+/* ===== 加分按鈕（單排） ===== */
 .score-buttons {
   display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
+  gap: 8px;
+  margin-top: 20px;
 }
 
 .score-buttons button {
   flex: 1;
-  margin: 0 3px;
-  padding: 6px;
-  font-size: 14px;
+  padding: 10px;
+  font-size: 16px;
   background-color: #ff9800;
   color: white;
   font-weight: bold;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
 }
 
-/* 修改分數按鈕 */
+/* ===== 修改分數 ===== */
 #scoreboard button {
-  background-color: #2196f3;
-  color: white;
-  font-weight: bold;
+  margin-top: 6px;
+  background: #2196f3;
   border: none;
+  color: white;
+  padding: 4px 8px;
   border-radius: 6px;
-  padding: 6px;
   cursor: pointer;
 }
 </style>
@@ -140,7 +160,7 @@ h2 {
 
 <body>
 
-<h2>🧠</h2>
+<h2>機制問答>機制>幾
 
 <!-- 計分板 -->
 <div id="scoreboard"></div>
@@ -148,7 +168,7 @@ h2 {
 <!-- 題目牆 -->
 <div id="board"></div>
 
-<!-- 題目視窗 -->
+<!-- 題目彈窗 -->
 <div id="modal" class="modal">
   <div class="modal-content">
     <span id="closeBtn">✖</span>
@@ -160,11 +180,10 @@ h2 {
 /* ===== 基本設定 ===== */
 const categories = ["歷史", "人文", "數學", "常識", "科學"];
 const values = [100, 200, 300, 400];
-const teams = ["Team A", "Team B", "Team C", "Team D", "Team E"];
-
+const teams = ["A隊", "B隊", "C隊", "D隊", "E隊"];
 const scores = Array(teams.length).fill(0);
 
-/* ===== 題目資料 ===== */
+/* ===== 題目資料（可放圖片） ===== */
 const questions = [
   { category:"歷史", value:100, question:"秦始皇統一中國是哪個朝代？" },
   { category:"人文", value:100, question:"四書之一是什麼？" },
@@ -200,52 +219,46 @@ const closeBtn = document.getElementById("closeBtn");
 
 let currentCard = null;
 let currentValue = 0;
-
-/* ===== 計分板 ===== */
 let editMode = false;
 
+/* ===== 計分板 ===== */
 function toggleEditScores() {
-  editMode = !editMode; // 切換編輯模式
+  editMode = !editMode;
   renderScoreboard();
 }
 
 function renderScoreboard() {
   scoreboard.innerHTML = "";
 
-  // 修改分數按鈕
-  const editDiv = document.createElement("div");
-  editDiv.style.gridColumn = "1 / -1";
-  const editBtn = document.createElement("button");
-  editBtn.textContent = editMode ? "Exit" : "Edit";
-  editBtn.onclick = toggleEditScores;
-  editDiv.appendChild(editBtn);
-  scoreboard.appendChild(editDiv);
-
   teams.forEach((team, i) => {
     const div = document.createElement("div");
     div.className = "team";
-    div.dataset.teamIndex = i;
     div.innerHTML = `${team}<span>${scores[i]}</span>`;
 
-    if(editMode) {
-      const btnPlus = document.createElement("button");
-      btnPlus.textContent = "+";
-      btnPlus.onclick = () => { scores[i] += 100; renderScoreboard(); };
+    if (editMode) {
+      const plus = document.createElement("button");
+      plus.textContent = "+";
+      plus.onclick = () => { scores[i] += 100; renderScoreboard(); };
 
-      const btnMinus = document.createElement("button");
-      btnMinus.textContent = "-";
-      btnMinus.onclick = () => { scores[i] -= 100; renderScoreboard(); };
+      const minus = document.createElement("button");
+      minus.textContent = "-";
+      minus.onclick = () => { scores[i] -= 100; renderScoreboard(); };
 
-      div.appendChild(btnPlus);
-      div.appendChild(btnMinus);
+      div.appendChild(plus);
+      div.appendChild(minus);
     }
 
     scoreboard.appendChild(div);
   });
+
+  const editBtn = document.createElement("button");
+  editBtn.textContent = editMode ? "Exit" : "Edit";
+  editBtn.onclick = toggleEditScores;
+  scoreboard.appendChild(editBtn);
 }
 renderScoreboard();
 
-/* ===== 標題 ===== */
+/* ===== 題目牆 ===== */
 categories.forEach(cat => {
   const div = document.createElement("div");
   div.className = "category";
@@ -253,7 +266,6 @@ categories.forEach(cat => {
   board.appendChild(div);
 });
 
-/* ===== 卡片 ===== */
 values.forEach(value => {
   categories.forEach(cat => {
     const q = questions.find(x => x.category === cat && x.value === value);
@@ -263,7 +275,6 @@ values.forEach(value => {
 
     card.onclick = () => {
       if (card.classList.contains("used")) return;
-
       currentCard = card;
       currentValue = value;
 
@@ -271,9 +282,7 @@ values.forEach(value => {
         <h3>${cat}｜${value} 分</h3>
         <p>${q.question}</p>
         <div class="score-buttons">
-          ${teams.map((t,i)=>`
-            <button onclick="addScore(${i})">${t}</button>
-          `).join("")}
+          ${teams.map((t,i)=>`<button onclick="addScore(${i})">${t}</button>`).join("")}
         </div>
       `;
       modal.classList.add("show");
@@ -284,17 +293,15 @@ values.forEach(value => {
 });
 
 /* ===== 加分 ===== */
-function addScore(teamIndex) {
-  scores[teamIndex] += currentValue;
+function addScore(i) {
+  scores[i] += currentValue;
   renderScoreboard();
   closeQuestion();
 }
 
-/* ===== 關閉題目 ===== */
 function closeQuestion() {
   modal.classList.remove("show");
-  if (currentCard) currentCard.classList.add("hide", "used");
-  currentCard = null;
+  if (currentCard) currentCard.classList.add("hide","used");
 }
 
 closeBtn.onclick = closeQuestion;
