@@ -5,7 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>機智問答</title>
 <style>
-body { margin:0; background:#0b1c3d; color:white; font-family:Arial,sans-serif;}
+body {
+  margin: 0;
+  background-image: url("images/BG.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: white;
+  font-family: Arial, sans-serif;
+}
 #audioProgress { width:80%; margin:10px auto; display:block;}
 h2 { text-align:center; margin:10px 0;}
 #scoreboard { display:flex; justify-content:center; gap:12px; margin:10px auto 20px;}
@@ -56,20 +65,20 @@ const questions = [
   {category:"數學", value:100, question:"5 + 5 = ?", img:null, audio:null},
   {category:"常識", value:100, question:"一年有幾個月？", img:null, audio:null},
   {category:"猜歌", value:100, question:"這首歌的歌名是？", img:null, audio:"Audio/Audio1.mp3"},
-  {category:"動漫", value:100, question:"我是誰？", img:"images/guess.png", audio:null},
-  {category:"人文", value:100, question:"四書之一是什麼？", img:null, audio:null},
-  {category:"數學", value:100, question:"5 + 5 = ?", img:null, audio:null},
-  {category:"常識", value:100, question:"一年有幾個月？", img:null, audio:null},
+  {category:"動漫", value:200, question:"我是誰？", img:"images/guess.png", audio:null},
+  {category:"人文", value:200, question:"四書之一是什麼？", img:null, audio:null},
+  {category:"數學", value:200, question:"5 + 5 = ?", img:null, audio:null},
+  {category:"常識", value:200, question:"一年有幾個月？", img:null, audio:null},
   {category:"猜歌", value:200, question:"這首歌的歌名是？", img:null, audio:"Audio/Audio2.mp3"},
-  {category:"動漫", value:100, question:"我是誰？", img:"images/guess.png", audio:null},
-  {category:"人文", value:100, question:"四書之一是什麼？", img:null, audio:null},
-  {category:"數學", value:100, question:"5 + 5 = ?", img:null, audio:null},
-  {category:"常識", value:100, question:"一年有幾個月？", img:null, audio:null},
+  {category:"動漫", value:300, question:"我是誰？", img:"images/guess.png", audio:null},
+  {category:"人文", value:300, question:"四書之一是什麼？", img:null, audio:null},
+  {category:"數學", value:300, question:"5 + 5 = ?", img:null, audio:null},
+  {category:"常識", value:300, question:"一年有幾個月？", img:null, audio:null},
   {category:"猜歌", value:300, question:"這首歌的歌名是？", img:null, audio:"Audio/Audio3.mp3"},
-  {category:"動漫", value:100, question:"我是誰？", img:"images/guess.png", audio:null},
-  {category:"人文", value:100, question:"四書之一是什麼？", img:null, audio:null},
-  {category:"數學", value:100, question:"5 + 5 = ?", img:null, audio:null},
-  {category:"常識", value:100, question:"一年有幾個月？", img:null, audio:null},
+  {category:"動漫", value:400, question:"我是誰？", img:"images/guess.png", audio:null},
+  {category:"人文", value:400, question:"四書之一是什麼？", img:null, audio:null},
+  {category:"數學", value:400, question:"5 + 5 = ?", img:null, audio:null},
+  {category:"常識", value:400, question:"一年有幾個月？", img:null, audio:null},
   {category:"猜歌", value:400, question:"這首歌的歌名是？", img:null, audio:"Audio/Audio4.mp3"}
 ];
 
