@@ -55,47 +55,53 @@ h2 { text-align:center; margin:10px 0;}
 </div>
 
 <script>
-const categories = ["動漫","語文","迷因","專業","猜歌"];
+const categories = ["動漫","文學","迷因","歷史","猜歌(80s/90s)", "猜歌(00後)"];
 const values = [100,200,300,400,500,600];
 const teams = ["A隊","B隊","C隊","D隊","E隊"];
 const scores = Array(teams.length).fill(0);
 
 const questions = [
   {category:"動漫", value:100, question:"請問艾倫說了什麼?", img:"images/attack.jpg", audio:null},
-  {category:"語文", value:100, question:"四書之一是什麼？", img:null, audio:null}, /*1*/
+  {category:"文學", value:100, question:"四書之一是什麼？", img:null, audio:null}, /*1*/
   {category:"迷因", value:100, question:"請問這隻貓接下來說了什麼?", img:"images/Huh.png", audio:null},
-  {category:"專業", value:100, question:"一年有幾個月", img:null, audio:null}, /*1*/
-  {category:"猜歌", value:100, question:"這首歌的歌名是", img:null, audio:"Audio/Audio1.mp3"}, /*1*/
+  {category:"歷史", value:100, question:"一年有幾個月", img:null, audio:null}, /*1*/
+  {category:"猜歌(80s/90s)", value:100, question:"這首歌的歌名是", img:null, audio:"Audio/Audio1.mp3"}, /*1*/
+  {category:"猜歌(00後)", value:100, question:"這首歌的歌名是", img:null, audio:"Audio/Audio1.mp3"}, /*1*/
   
   {category:"動漫", value:200, question:"圖中芙莉蓮拿的是什麼藥水", img:"images/Frieren.png", audio:null},
-  {category:"語文", value:200, question:"四書之一是什麼？", img:null, audio:null}, /*1*/
+  {category:"文學", value:200, question:"四書之一是什麼？", img:null, audio:null}, /*1*/
   {category:"迷因", value:300, question:"圖中時任立委意外的模仿了哪隻寶可夢?", img:"images/Cubone.png", audio:null},
-  {category:"專業", value:200, question:"一年有幾個月？", img:null, audio:null}, /*1*/
-  {category:"猜歌", value:200, question:"這首歌的歌名是？", img:null, audio:"Audio/Audio2.mp3"}, /*1*/
+  {category:"歷史", value:200, question:"一年有幾個月？", img:null, audio:null}, /*1*/
+  {category:"猜歌(80s/90s)", value:200, question:"這首歌的歌名是？", img:null, audio:"Audio/Audio2.mp3"}, /*1*/
+  {category:"猜歌(00後)", value:100, question:"這首歌的歌名是", img:null, audio:"Audio/Audio1.mp3"}, /*1*/
   
   {category:"動漫", value:300, question:"鬼滅之刃中，猗窩座的老婆戀雪是怎麼死的?", img:"images/demon.jpg", audio:null},
-  {category:"語文", value:300, question:"四書之一是什麼？", img:null, audio:null}, /*1*/
+  {category:"文學", value:300, question:"四書之一是什麼？", img:null, audio:null}, /*1*/
   {category:"迷因", value:200, question:"圖中男子稱這個部位為?", img:"images/Q2.jpg", audio:null},
-  {category:"專業", value:300, question:"一年有幾個月？", img:null, audio:null}, /*1*/
-  {category:"猜歌", value:300, question:"這首歌的歌名是？", img:null, audio:"Audio/Audio3.mp3"}, /*1*/
+  {category:"歷史", value:300, question:"一年有幾個月？", img:null, audio:null}, /*1*/
+  {category:"猜歌(80s/90s)", value:300, question:"這首歌的歌名是？", img:null, audio:"Audio/Audio3.mp3"}, /*1*/
+  {category:"猜歌(00後)", value:100, question:"這首歌的歌名是", img:null, audio:"Audio/Audio1.mp3"}, /*1*/
   
   {category:"動漫", value:400, question:"舌頭上的東西是？", img:"images/jojo.jpeg", audio:null},
-  {category:"語文", value:400, question:"四書之一是什麼？", img:null, audio:null}, /*1*/
+  {category:"文學", value:400, question:"四書之一是什麼？", img:null, audio:null}, /*1*/
   {category:"迷因", value:400, question:"圖中的弟弟當時國小幾年級？", img:"images/1.jpeg", audio:null},
-  {category:"專業", value:400, question:"一年有幾個月？", img:null, audio:null}, /*1*/
-  {category:"猜歌", value:400, question:"這首歌的歌名是？", img:null, audio:"Audio/Audio4.mp3"}, /*1*/
+  {category:"歷史", value:400, question:"一年有幾個月？", img:null, audio:null}, /*1*/
+  {category:"猜歌(80s/90s)", value:400, question:"這首歌的歌名是？", img:null, audio:"Audio/Audio4.mp3"}, /*1*/
+  {category:"猜歌(00後)", value:100, question:"這首歌的歌名是", img:null, audio:"Audio/Audio1.mp3"}, /*1*/
 
   {category:"動漫", value:500, question:"名偵探柯南中這集的殺人手法是？", img:"images/mask.jpg", audio:null},
-  {category:"語文", value:500, question:"四書之一是什麼？", img:null, audio:null}, /*1*/
+  {category:"文學", value:500, question:"四書之一是什麼？", img:null, audio:null}, /*1*/
   {category:"迷因", value:500, question:"這隻魚說了什麼？", img:"images/sponge.jpeg", audio:null},
-  {category:"專業", value:500, question:"一年有幾個月", img:null, audio:null}, /*1*/
-  {category:"猜歌", value:500, question:"這首歌的歌名是", img:null, audio:"Audio/Audio1.mp3"}, /*1*/
+  {category:"歷史", value:500, question:"一年有幾個月", img:null, audio:null}, /*1*/
+  {category:"猜歌(80s/90s)", value:500, question:"這首歌的歌名是", img:null, audio:"Audio/Audio1.mp3"}, /*1*/
+  {category:"猜歌(00後)", value:100, question:"這首歌的歌名是", img:null, audio:"Audio/Audio1.mp3"}, /*1*/
 
   {category:"動漫", value:600, question:"我是誰？", img:"images/guess.png", audio:null},
-  {category:"語文", value:600, question:"四書之一是什麼？", img:null, audio:null}, /*1*/
+  {category:"文學", value:600, question:"四書之一是什麼？", img:null, audio:null}, /*1*/
   {category:"迷因", value:600, question:"圖中男子所稱讚的是南投的哪個村?", img:"images/thumb.jpg", audio:null},
-  {category:"專業", value:600, question:"一年有幾個月", img:null, audio:null}, /*1*/
-  {category:"猜歌", value:600, question:"這首歌的歌名是", img:null, audio:"Audio/Audio1.mp3"} /*1*/
+  {category:"歷史", value:600, question:"一年有幾個月", img:null, audio:null}, /*1*/
+  {category:"猜歌(80s/90s)", value:600, question:"這首歌的歌名是", img:null, audio:"Audio/Audio1.mp3"}, /*1*/
+  {category:"猜歌(00後)", value:100, question:"這首歌的歌名是", img:null, audio:"Audio/Audio1.mp3"} /*1*/
   
 ];
 
