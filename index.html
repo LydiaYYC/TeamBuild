@@ -98,7 +98,7 @@ const questions = [
 
   {category:"動漫", value:500, question:"名偵探柯南中這集的殺人手法是？", img:"images/mask.jpg", audio:null},
   {category:"文學", value:500, question:"哪部小說描寫孤兒少年在19世紀英格蘭孤苦求生，歷經冒險與磨難，最終尋找自我和歸屬？", img:null, audio:null},
-  {category:"迷因", value:500, question:"這隻魚說了什麼？", img:"images/sponge.jpeg", audio:null},
+  {category:"迷因", value:500, question:"這隻魚說了什麼？", img:"images/sponge.jpeg", audio:null, bonus:true},
   {category:"歷史", value:500, question:"推行科舉制度，打破門第限制選官的是哪一個朝代？", img:null, audio:null},
   {category:"猜歌(80s/90s)", value:500, question:"這首歌的歌名是", img:null, audio:"Audio/Audio1.mp3"},/*1*/
   {category:"猜歌(00後)", value:500, question:"這首歌的歌名是", img:null, audio:"Audio/Audio1.mp3"}, /*1*/
@@ -123,6 +123,7 @@ let currentValue = 0;
 let editMode = false;
 let isPlaying = false;
 let progressInterval;
+let currentMultiplier = 1;
 
 function renderScoreboard() {
   scoreboard.innerHTML = "";
@@ -165,10 +166,15 @@ values.forEach(value=>{
       if(card.classList.contains("used")) return;
       currentCard = card;
       currentValue = value;
+      currentMultiplier = q.bonus ? 2 : 1;
       modalBody.innerHTML = "";
       if(q){
+        const isBonus = q.bonus === true;
         modalBody.innerHTML = `
-          <h3>${cat}｜${value} 分</h3>
+          <h3>
+            ${cat}｜${value} 分
+            ${isBonus ? `<span style="color:red; font-weight:bold;"> 🎁 BONUS ×2</span>` : ""}
+          </h3>
           ${q.img?`<img src="${q.img}" alt="題目圖片">`:""}
           ${q.audio?`
             <div class="audio-box">
@@ -191,7 +197,7 @@ values.forEach(value=>{
 });
 
 function addScore(i){
-  scores[i]+=currentValue;
+  scores[i] += currentValue * currentMultiplier;
   renderScoreboard();
   closeQuestion();
 }
