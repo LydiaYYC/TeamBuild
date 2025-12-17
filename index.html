@@ -147,7 +147,7 @@ function renderScoreboard() {
   teams.forEach((team,i)=>{
     const div = document.createElement("div");
     div.className = "team";
-    div.innerHTML = `${team}<span>${scores[i]}</span>`;
+    div.innerHTML = `${team}<span>$${scores[i]}</span>`;
     if(editMode){
       const plus=document.createElement("button");
       plus.textContent="+";
@@ -201,7 +201,7 @@ values.forEach(value=>{
             </div>`:""}
           <p>${q.question}</p>
           <div class="score-buttons">
-            ${teams.map((t,i)=>`<button onclick="addScore(${i})">${t} $${scores[i]}</button>`).join("")}
+            ${teams.map((t,i)=>`<button onclick="addScore(${i})">${t}</button>`).join("")}
           </div>
         `;
       }else{
