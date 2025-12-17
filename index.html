@@ -57,7 +57,7 @@ h2 { text-align:center; margin:24px 0; font-size: 48px;}
 .modal-content h3 { margin-top:0;}
 .modal-content img { max-width:100%; max-height:400px; display:block; margin:10px auto;}
 .score-buttons { display:flex; gap:8px; margin-top:20px;}
-.score-buttons button { flex:1; padding:10px; font-size:16px; background-color:#ff9800; color:white; font-weight:bold; border:none; border-radius:8px; cursor:pointer;}
+.score-buttons button { flex:1; padding:10px; font-size:16px; background: linear-gradient(180deg, #1e90ff, #0d47a1); font-weight:bold; border:none; border-radius:8px; cursor:pointer; color: #ffee00; font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;}
 #scoreboard button {
   background: rgba(255,255,255,0.2);
   color: #ccc;
@@ -203,7 +203,7 @@ values.forEach(value=>{
           ${q.img?`<img src="${q.img}" alt="題目圖片">`:""}
           ${q.audio?`
             <div class="audio-box">
-              <button class="audio-btn" onclick="toggleAudio()">▶ 播放</button>
+              <button class="audio-btn" onclick="toggleAudio()">▶</button>
               <input type="range" id="audioProgress" value="0" min="0" max="100" step="0.1" onchange="seekAudio(this)">
               <audio id="questionAudio" src="${q.audio}"></audio>
             </div>`:""}
@@ -235,14 +235,14 @@ function toggleAudio(){
   const progress=document.getElementById("audioProgress");
   if(!audio) return;
   if(isPlaying){
-    audio.pause(); btn.textContent="▶ 播放"; clearInterval(progressInterval); isPlaying=false;
+    audio.pause(); btn.textContent="▶"; clearInterval(progressInterval); isPlaying=false;
   }else{
-    audio.play(); btn.textContent="⏹ 停止"; isPlaying=true;
+    audio.play(); btn.textContent="⏹"; isPlaying=true;
     progressInterval=setInterval(()=>{
       if(audio.duration) progress.value=(audio.currentTime/audio.duration)*100;
     },200);
     audio.onended=()=>{
-      btn.textContent="▶ 播放"; progress.value=0; clearInterval(progressInterval); isPlaying=false;
+      btn.textContent="▶"; progress.value=0; clearInterval(progressInterval); isPlaying=false;
     };
   }
 }
