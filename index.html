@@ -29,8 +29,22 @@ h2 { text-align:center; margin:24px 0; font-size: 48px;}
   padding-bottom: 40px;
 }
 .category { font-weight:bold; font-size:28px; padding:10px 0; text-align:center;} 
-.card { background:#1e90ff; border-radius:10px; padding:26px 0; font-size:48px; font-weight:bold; cursor:pointer; text-align:center;}
-.card:hover { background:#4aa3ff;}
+.card {
+  background: linear-gradient(180deg, #1e90ff, #0d47a1);
+  border-radius: 14px;
+  padding: 28px 0;
+  font-size: 36px;
+  font-weight: 900;
+  color: #ffd700;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+  box-shadow: 0 6px 0 #08306b, 0 10px 20px rgba(0,0,0,0.4);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 0 #08306b, 0 14px 28px rgba(0,0,0,0.5);
+}
 .card.hide { opacity:0; pointer-events:none; transition:opacity 0.3s;}
 .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:999;}
 .modal.show { display:flex; align-items:center; justify-content:center;}
